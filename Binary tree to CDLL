@@ -1,0 +1,201 @@
+//Initial Template for Java
+
+import java.util.LinkedList; 
+import java.util.Queue; 
+import java.io.*;
+import java.util.*;
+
+class Node{
+    int data;
+    Node left;
+    Node right;
+    Node(int data){
+        this.data = data;
+        left=null;
+        right=null;
+    }
+}
+
+class GfG {
+    
+    static Node buildTree(String str){
+        
+        if(str.length()==0 || str.charAt(0)=='N'){
+            return null;
+        }
+        
+        String ip[] = str.split(" ");
+        // Create the root of the tree
+        Node root = new Node(Integer.parseInt(ip[0]));
+        // Push the root to the queue
+        
+        Queue<Node> queue = new LinkedList<>(); 
+        
+        queue.add(root);
+        // Starting from the second element
+        
+        int i = 1;
+        while(queue.size()>0 && i < ip.length) {
+                
+            // Get and remove the front of the queue
+            Node currNode = queue.peek();
+            queue.remove();
+                
+            // Get the current node's value from the string
+            String currVal = ip[i];
+                
+            // If the left child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the left child for the current node
+                currNode.left = new Node(Integer.parseInt(currVal));
+                // Push it to the queue
+                queue.add(currNode.left);
+            }
+                
+            // For the right child
+            i++;
+            if(i >= ip.length)
+                break;
+                
+            currVal = ip[i];
+                
+            // If the right child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the right child for the current node
+                currNode.right = new Node(Integer.parseInt(currVal));
+                    
+                // Push it to the queue
+                queue.add(currNode.right);
+            }
+            i++;
+        }
+        
+        return root;
+    }
+    static void printInorder(Node root)
+    {
+        if(root == null)
+            return;
+            
+        printInorder(root.left);
+        System.out.print(root.data+" ");
+        
+        printInorder(root.right);
+    }
+    static void displayCList(Node head)
+    {
+        Node itr = head;
+        do
+        {
+            System.out.print(itr.data + " ");
+            itr = itr.right;
+        } while (head!=itr);
+        System.out.println();
+    	itr=itr.left;
+    	do{
+    		System.out.print(itr.data + " ");
+    		itr=itr.left;
+    	}while(head!=itr);
+    	System.out.println(itr.data + " ");
+    }
+    
+	public static void main (String[] args) throws IOException {
+	        BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+	        
+	        int t=Integer.parseInt(br.readLine());
+	        while(t-- > 0){
+	            String s= br.readLine();
+	            Node root = buildTree(s);
+	            
+	            Tree boj = new Tree();
+	            Node head = boj.bTreeToClist(root);
+	            displayCList(head);
+	            
+	        }
+	    
+	}
+}
+
+
+// } Driver Code Ends
+
+
+//User function Template for Java
+
+
+
+
+
+/*Please note that it's Function problem i.e.
+you need to write your solution in the form of Function(s) only.
+Driver Code to call/invoke your function is mentioned above.*/
+
+//User function Template for Java
+/*
+Node defined as
+class Node{
+    int data;
+    Node left,right;
+    Node(int d){
+        data=d;
+        left=right=null;
+    }
+}
+*/
+class Tree
+{ 
+    
+    Node bTreeToClist(Node root)
+    {
+        if (root == null) 
+            return null; 
+  
+        Node left = bTreeToClist(root.left); 
+        Node right = bTreeToClist(root.right); 
+  
+        // Make a circular linked list of single node 
+        // (or root). To do so, make the right and 
+        // left pointers of this node point to itself 
+        root.left = root.right = root; 
+  
+        // Step 1 (concatenate the left list with the list  
+        //         with single node, i.e., current node) 
+        // Step 2 (concatenate the returned list with the 
+        //         right List) 
+        return concatenate(concatenate(left, root), right); 
+    }
+    public Node concatenate(Node leftList,Node rightList) 
+    { 
+        // If either of the list is empty, then 
+        // return the other list 
+        if (leftList == null) 
+            return rightList; 
+        if (rightList == null) 
+            return leftList; 
+  
+        // Store the last Node of left List 
+        Node leftLast = leftList.left; 
+  
+        // Store the last Node of right List 
+        Node rightLast = rightList.left; 
+  
+        // Connect the last node of Left List 
+        // with the first Node of the right List 
+        leftLast.right = rightList; 
+        rightList.left = leftLast; 
+  
+        // left of first node refers to 
+        // the last node in the list 
+        leftList.left = rightLast; 
+  
+        // Right of last node refers to the first 
+        // node of the List 
+        rightLast.right = leftList; 
+  
+        // Return the Head of the List 
+        return leftList; 
+    }
+}
+    
