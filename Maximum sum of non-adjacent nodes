@@ -1,0 +1,148 @@
+//Initial Template for Java
+
+//Initial Template for Java
+
+import java.util.*;
+import java.io.*;
+import java.lang.*;
+
+class Node
+{
+    int data;
+    Node left, right;
+    
+    Node(int data)
+    {
+        this.data = data;
+        left = null;
+        right = null;
+    }
+}
+
+class MaxSum
+{
+    static Node buildTree(String str){
+        
+        if(str.length()==0 || str.charAt(0)=='N'){
+            return null;
+        }
+        
+        String ip[] = str.split(" ");
+        // Create the root of the tree
+        Node root = new Node(Integer.parseInt(ip[0]));
+        // Push the root to the queue
+        
+        Queue<Node> queue = new LinkedList<>(); 
+        
+        queue.add(root);
+        // Starting from the second element
+        
+        int i = 1;
+        while(queue.size()>0 && i < ip.length) {
+            
+            // Get and remove the front of the queue
+            Node currNode = queue.peek();
+            queue.remove();
+                
+            // Get the current node's value from the string
+            String currVal = ip[i];
+                
+            // If the left child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the left child for the current node
+                currNode.left = new Node(Integer.parseInt(currVal));
+                // Push it to the queue
+                queue.add(currNode.left);
+            }
+                
+            // For the right child
+            i++;
+            if(i >= ip.length)
+                break;
+                
+            currVal = ip[i];
+                
+            // If the right child is not null
+            if(!currVal.equals("N")) {
+                    
+                // Create the right child for the current node
+                currNode.right = new Node(Integer.parseInt(currVal));
+                    
+                // Push it to the queue
+                queue.add(currNode.right);
+            }
+            i++;
+        }
+        
+        return root;
+    }
+    
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	        
+	        int t=Integer.parseInt(br.readLine());
+    
+	        while(t > 0){
+	            String s = br.readLine();
+    	    	Node root = buildTree(s);
+        	    GFG g = new GFG();
+			
+			    int ans = g.getMaxSum(root);
+			    System.out.println(ans);
+                t--;
+	        }
+    }
+}
+
+
+
+// } Driver Code Ends
+
+class GFG
+{
+    static int getMaxSum(Node node)
+    {
+        if (node == null)  
+            return 0;  
+        HashMap<Node,Integer> mp=new HashMap<>(); 
+        return getMaxSumUtil(node, mp);
+    }
+    public static int getMaxSumUtil(Node node, HashMap<Node,Integer> mp)  
+    {  
+        if (node == null)  
+            return 0;  
+    
+        // If node is already processed then return calculated  
+        // value from map  
+        if(mp.containsKey(node)) 
+            return mp.get(node); 
+    
+        //  take current node value and call for all grand children  
+        int incl = node.data + sumOfGrandChildren(node, mp);  
+    
+        //  don't take current node value and call for all children  
+        int excl = getMaxSumUtil(node.left, mp) +  
+                   getMaxSumUtil(node.right, mp);  
+    
+        //  choose maximum from both above calls and store that in map  
+        mp.put(node,Math.max(incl, excl));  
+    
+        return mp.get(node);  
+    }
+    public static int sumOfGrandChildren(Node node, HashMap<Node,Integer> mp)  
+    {  
+        int sum = 0;  
+        //  call for children of left child only if it is not NULL  
+        if (node.left!=null)  
+            sum += getMaxSumUtil(node.left.left, mp) +  
+                   getMaxSumUtil(node.left.right, mp);  
+    
+        //  call for children of right child only if it is not NULL  
+        if (node.right!=null)  
+            sum += getMaxSumUtil(node.right.left, mp) +  
+                   getMaxSumUtil(node.right.right, mp);  
+        return sum;  
+    }
+}
