@@ -1,0 +1,62 @@
+import java.io.*;
+
+class GFG {
+	public static void main (String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int test = scan.nextInt();
+		
+		while(test > 0){
+		    String s = scan.next();
+		    String t = scan.next();
+		    
+		    System.out.println(new solve().smallestWindow(s, t));
+		    test--;
+		}
+	}
+}// } Driver Code Ends
+
+
+class solve
+{
+    // return the smallest window in S with all the characters of P
+    // if no such window exists, return "-1" 
+    public static String smallestWindow(String s, String t){
+       int min = Integer.MAX_VALUE;
+        int start = 0;
+        int startIndex = 0;
+        int matches = 0;
+        Map<Character, Integer> frecuencies = new HashMap<>();
+        
+        for(int i = 0; i < t.length();  i++){
+            frecuencies.put(t.charAt(i), frecuencies.getOrDefault(t.charAt(i), 0) + 1);
+        }
+        
+        for(int end = 0; end < s.length() ; end++){
+            char rigthChar = s.charAt(end);
+            if(frecuencies.containsKey(rigthChar)){
+                frecuencies.put(rigthChar, frecuencies.get(rigthChar) - 1);
+                if(frecuencies.get(rigthChar) >= 0){
+                    matches++;
+                }
+            }
+            
+            while(matches == t.length()){
+                if(min > end - start + 1){
+                    min = end - start + 1;
+                    startIndex = start;
+                }
+                
+                char leftChar = s.charAt(start++);
+                if(frecuencies.containsKey(leftChar)){
+                    if(frecuencies.get(leftChar) == 0){
+                        matches--;
+                    }
+                    frecuencies.put(leftChar, frecuencies.get(leftChar) + 1);
+                }
+                
+            }
+        }
+        
+        return min == Integer.MAX_VALUE ? "-1" : s.substring(startIndex, min + startIndex);
+    }
+}
