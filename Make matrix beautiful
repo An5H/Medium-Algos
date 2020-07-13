@@ -1,0 +1,68 @@
+import java.lang.*;
+import java.io.*;
+import java.util.*;
+
+class Driverclass
+{
+    
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        
+        while(t-- > 0)
+        {
+            int n = Integer.parseInt(read.readLine());
+             int mat[][] = new int[n][n];
+            String str[] = read.readLine().trim().split("\\s+");
+            int k =0;
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < n; j++)
+                  mat[i][j] = Integer.parseInt(str[k++]);
+            }
+            System.out.println(new Operation().findMinOperation(n, mat));
+        }
+    }
+}
+// } Driver Code Ends
+
+
+class Operation
+{
+    //Complete this function
+    static int findMinOperation(int n, int mat[][])
+    {
+        int sumRow[] = new int[n];
+        int sumCol[] = new int[n];
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                sumRow[i] += mat[i][j];
+                sumCol[j] += mat[i][j];
+            }
+        }
+        int max = 0;
+        for(int i = 0; i < n; i++){
+            max = Math.max(max, sumRow[i]);
+            max = Math.max(max, sumCol[i]);
+        }
+        int count = 0;
+        for(int i = 0, j = 0; i < n && j < n;){
+            int diff = Math.min(max - sumRow[i], max - sumCol[j]);
+            mat[i][j] += diff;
+            sumRow[i] += diff;
+            sumCol[j] += diff;
+            count += diff;
+            if (sumRow[i] == max) 
+                ++i; 
+      
+            // If jth column satisfied,  
+            // increment jth value for 
+            // next iteration 
+            if (sumCol[j] == max) 
+                ++j; 
+        }
+        return count;
+    }
+}
