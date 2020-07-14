@@ -1,0 +1,51 @@
+/*package whatever //do not write package name here */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class GFG {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int t = in.nextInt();
+        while (t-- > 0) {
+            int n = in.nextInt();
+            long arr[] = new long[n];
+
+            for (int i = 0; i < n; ++i) arr[i] = in.nextLong();
+
+            new solve().minCost(arr, n);
+        }
+    }
+}
+// } Driver Code Ends
+
+
+class solve {
+
+    void minCost(long arr[], int n) {
+        
+        // if(arr.length == 1){
+        //     System.out.print(arr[0]);
+        //     return;
+        // }
+        // if(arr.length == 2){
+        //     System.out.print(arr[0] + arr[1]);
+        //     return;
+        // }
+        
+        PriorityQueue <Long> pq = new PriorityQueue <>();
+        
+        for(long i: arr){
+            pq.add(i);
+        }
+        
+        long sum = 0, total = 0;
+        while(pq.size() != 1){
+            sum = (pq.poll() + pq.poll());
+            total += sum;
+            pq.add(sum);
+        }
+        System.out.println(total);
+    }
+}
