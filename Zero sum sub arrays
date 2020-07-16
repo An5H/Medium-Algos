@@ -1,0 +1,34 @@
+#include<unordered_map>
+using namespace std;
+int main()
+ {
+int t;
+cin >> t;
+while(t--)
+{
+    long int n;
+    cin >> n;
+    long long int ar[n];
+    for(int i=0;i<n;i++)
+    cin >> ar[i];
+    unordered_map<int,int> map;
+    
+    int ans = 0;
+    int sum = 0;
+    for(int i=0;i<n;i++)
+    {
+        sum+=ar[i];
+        if(sum==0)
+        ans++;
+        
+        if(map.find(sum)!=map.end())
+        {
+            ans+=map[sum];
+        }
+        
+        map[sum]++;
+    }
+    cout << ans << endl;
+    
+}
+}
