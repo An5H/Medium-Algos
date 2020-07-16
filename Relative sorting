@@ -1,0 +1,96 @@
+import java.lang.*;
+import java.io.*;
+class GFG
+ {
+	public static void main (String[] args) throws IOException
+	 {
+	      BufferedReader ob = new BufferedReader(new InputStreamReader(System.in));
+	      int t = Integer.parseInt(ob.readLine());
+	      while(t-- > 0){
+	         String[] sizes = ob.readLine().trim().split(" ");
+	         int size1 = Integer.parseInt(sizes[0]);
+	         int size2 = Integer.parseInt(sizes[1]);
+	         String[] s1 = ob.readLine().trim().split(" ");
+	         String[] s2 = ob.readLine().trim().split(" ");
+	         int arr1[] = new int[size1];
+	         int arr2[] = new int[size2];
+	         for(int i = 0; i < size1; i++){
+	             arr1[i] = Integer.parseInt(s1[i]);
+	         }
+	         for(int i = 0; i < size2; i++){
+	             arr2[i] = Integer.parseInt(s2[i]);
+	         }
+	         sortAccording(arr1, arr2, arr1.length, arr2.length); 
+	         System.out.println();
+	      }
+	 }
+	 static int first(int arr[], int low, int high, 
+                     int x, int n) 
+    { 
+        if (high >= low) { 
+            /* (low + high)/2; */
+            int mid = low + (high - low) / 2; 
+  
+            if ((mid == 0 || x > arr[mid - 1]) && arr[mid] == x) 
+                return mid; 
+            if (x > arr[mid]) 
+                return first(arr, (mid + 1), high, 
+                             x, n); 
+            return first(arr, low, (mid - 1), x, n); 
+        } 
+        return -1; 
+    } 
+  
+    // Sort A1[0..m-1] according to the order 
+    // defined by A2[0..n-1]. 
+    static void sortAccording(int A1[], int A2[], int m, 
+                              int n) 
+    { 
+        // The temp array is used to store a copy 
+        // of A1[] and visited[] is used to mark the 
+        // visited elements in temp[]. 
+        int temp[] = new int[m], visited[] = new int[m]; 
+        for (int i = 0; i < m; i++) { 
+            temp[i] = A1[i]; 
+            visited[i] = 0; 
+        } 
+  
+        // Sort elements in temp 
+        Arrays.sort(temp); 
+  
+        // for index of output which is sorted A1[] 
+        int ind = 0; 
+  
+        // Consider all elements of A2[], find them 
+        // in temp[] and copy to A1[] in order. 
+        for (int i = 0; i < n; i++) { 
+            // Find index of the first occurrence 
+            // of A2[i] in temp 
+            int f = first(temp, 0, m - 1, A2[i], m); 
+  
+            // If not present, no need to proceed 
+            if (f == -1) 
+                continue; 
+  
+            // Copy all occurrences of A2[i] to A1[] 
+            for (int j = f; (j < m && temp[j] == A2[i]); 
+                 j++) { 
+                A1[ind++] = temp[j]; 
+                visited[j] = 1; 
+            } 
+        } 
+  
+        // Now copy all items of temp[] which are 
+        // not present in A2[] 
+        for (int i = 0; i < m; i++) 
+            if (visited[i] == 0) 
+                A1[ind++] = temp[i]; 
+                
+        for (int i = 0; i < A1.length; i++) 
+            System.out.print(A1[i] + " "); 
+    } 
+}
+
+
+
+
