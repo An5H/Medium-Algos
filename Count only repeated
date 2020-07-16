@@ -1,0 +1,39 @@
+import java.lang.*;
+import java.io.*;
+class GFG
+ {
+	public static void main (String[] args) throws IOException
+	 {
+	      BufferedReader ob = new BufferedReader(new InputStreamReader(System.in));
+	      int t = Integer.parseInt(ob.readLine());
+	      while(t-- > 0){
+	          int size = Integer.parseInt(ob.readLine());
+	          String[] str = ob.readLine().trim().split("\\s+");
+	          int arr[] = new int[size];
+	          for(int i = 0; i < size; i++){
+	              arr[i] = Integer.parseInt(str[i]);
+	          }
+	          new check().compute(arr);
+	          System.out.println();
+	      }
+	 }
+}
+class check{
+    public static void compute(int arr[]){
+        int element = 0, count = 1, index = 0;
+        for(int i = 0; i < arr.length-1; i++){
+            if(arr[i] == arr[i+1]){
+                element = arr[i];
+                index = i;
+                break;
+            }
+        }
+        for(int i = index; i < arr.length-1; i++){
+            if(arr[i] != arr[i+1]){
+                break;
+            }
+            count++;
+        }
+        System.out.print(element+" "+count);
+    }
+}
