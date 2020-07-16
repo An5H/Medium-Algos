@@ -1,0 +1,29 @@
+import java.lang.*;
+import java.io.*;
+class GFG
+ {
+	public static void main (String[] args)
+	 {
+	     Scanner ob = new Scanner(System.in);
+	     int t = Integer.parseInt(ob.nextLine());
+	     while(t-- > 0){
+	         String [] str = ob.nextLine().trim().split(" ");
+	         int size = Integer.parseInt(str[0]);
+	         int arr[] = new int[size];
+	         String [] elements = ob.nextLine().trim().split(" ");
+	         for(int i = 0; i < size; i++){
+	             arr[i] = Integer.parseInt(elements[i]);
+	         }
+	         new check().compute(arr);
+	         System.out.println();
+	     }
+	 }
+}
+class check{
+    static void compute(int arr[]){
+        Arrays.sort(arr);
+        for(int i: arr){
+        System.out.print(i+" ");
+    }
+    }
+}
