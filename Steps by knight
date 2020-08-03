@@ -1,0 +1,114 @@
+// Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+
+class FastReader {
+    BufferedReader br;
+    StringTokenizer st;
+
+    public FastReader() { br = new BufferedReader(new InputStreamReader(System.in)); }
+
+    String next() {
+        while (st == null || !st.hasMoreElements()) {
+            try {
+                st = new StringTokenizer(br.readLine());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return st.nextToken();
+    }
+
+    int nextInt() { return Integer.parseInt(next()); }
+
+    long nextLong() { return Long.parseLong(next()); }
+
+    double nextDouble() { return Double.parseDouble(next()); }
+
+    String nextLine() {
+        String str = "";
+        try {
+            str = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+}
+
+class GFG {
+    public static void main(String[] args) {
+
+        FastReader sc = new FastReader();
+        int t = sc.nextInt();
+        while (t > 0) {
+            int n = sc.nextInt();
+            ;
+            int knightpos[] = new int[2];
+            knightpos[0] = sc.nextInt();
+            ;
+            knightpos[1] = sc.nextInt();
+            ;
+            int targetpos[] = new int[2];
+            targetpos[0] = sc.nextInt();
+            ;
+            targetpos[1] = sc.nextInt();
+
+            Solution T = new Solution();
+            System.out.println(T.minStepToReachTarget(knightpos, targetpos, n));
+            t--;
+        }
+    }
+}
+// } Driver Code Ends
+
+
+// User function Template for Java
+
+class Solution {
+    // KnightPos : knight position coordinates
+    // targetPos : target position coordinated
+    // N : square matrix size
+    class knight{
+        int x, y, dist;
+        knight(int x, int y, int dist){
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+        }
+    }
+    public int minStepToReachTarget(int knightpos[], int targetpos[], int N) {
+        
+        int dx[] = { -2, -1, 1, 2, -2, -1, 1, 2 }; 
+        int dy[] = { -1, -2, -2, -1, 1, 2, 2, 1 };
+        
+        Queue <knight> q = new LinkedList <>();
+        boolean visited[][] = new boolean[N+1][N+1];
+        q.offer(new knight(knightpos[0], knightpos[1], 0));
+        visited[knightpos[0]][knightpos[1]] = true;
+        
+        int x, y;
+        while(!q.isEmpty()){
+            knight cur = q.poll();
+            if(cur.x == targetpos[0] && cur.y == targetpos[1]){
+                return cur.dist;
+            }
+            for(int i = 0; i < 8; i++){
+                x = cur.x + dx[i];
+                y = cur.y + dy[i];
+                if(isValid(x, y, N) && !visited[x][y]){
+                    visited[x][y] = true;
+                    q.offer(new knight(x, y, cur.dist+1));
+                }
+            }
+        }
+        return -1;
+    }
+    static boolean isValid(int x, int y, int N) 
+    { 
+        if (x >= 1 && x <= N && y >= 1 && y <= N) 
+            return true; 
+        return false; 
+    } 
+}
