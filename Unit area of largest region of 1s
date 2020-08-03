@@ -1,0 +1,57 @@
+import java.lang.*;
+import java.io.*;
+class GFG
+ {
+    static int size = 100;
+	public static void main (String[] args)
+	 {
+    	 Scanner ob = new Scanner(System.in);
+    	 int t = ob.nextInt();
+    	 while(t-- > 0){
+    	     int n = ob.nextInt();
+    	     int m = ob.nextInt();
+    	     int g[][] = new int[size][size];
+    	     for(int i = 0; i < n; i++){
+    	         for(int j = 0; j < m; j++){
+    	             g[i][j] = ob.nextInt();
+    	         }
+    	     }
+    	     System.out.println(new Area().findMaxArea(n, m, g));
+    	 }
+	 }
+}
+class Area {
+    int ans = 0;
+    int count = 0;
+    int findMaxArea(int N, int M, int A[][]) {
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < M; j++){
+                count = 0;
+                dfs(N, M, i, j, A);
+                if(ans < count){
+                    ans = count;
+                }
+            }
+        }
+        return ans;
+    }
+    void dfs(int row, int col, int i, int j, int A[][]){
+        if(i < 0 || i >= row || j < 0 || j >= col){
+            return;
+        }
+        if(A[i][j] == 0){
+            return;
+        }
+        count++;
+        A[i][j] = 0;
+        
+        dfs(row,col,i+1,j,A);
+        dfs(row,col,i-1,j,A);
+        dfs(row,col,i,j+1,A);
+        dfs(row,col,i,j-1,A);
+        dfs(row,col,i-1,j-1,A);
+        dfs(row,col,i+1,j+1,A);
+        dfs(row,col,i+1,j-1,A);
+        dfs(row,col,i-1,j+1,A);
+    }
+}
