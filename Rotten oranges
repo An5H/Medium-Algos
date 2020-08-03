@@ -1,0 +1,114 @@
+//Initial Template for Java
+
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+
+class GFG {
+	public static void main (String[] args) {
+		
+		Scanner sc = new Scanner (System.in);
+		int t = Integer.parseInt(sc.next());
+		
+		while(t>0)
+		{
+		    int r = Integer.parseInt(sc.next());
+		    int c = Integer.parseInt(sc.next());
+		    
+		    int a[][] = new int[r][c];
+		    for(int i=0;i<r;i++)
+		    {
+		        for(int j=0;j<c;j++)
+		        {
+		            a[i][j] = Integer.parseInt(sc.next());
+		        }
+		    }
+		    
+		    Solution T = new Solution();
+		    System.out.println(T.rotOranges(a,r,c));
+		    
+		    t--;
+		}
+	}
+}// } Driver Code Ends
+
+
+//User function Template for Java
+
+// a : given matrix
+// R and C : number of rows and columns respectively
+
+
+class Solution {
+    class Pair{
+        int first;
+        int second;
+        Pair(int first,int second){
+            this.first = first;
+            this.second = second;
+        }
+    }
+    //Make these variables global to avoid paasing through functions
+    Queue<Pair> q = new LinkedList<>();
+    int freshOranges = 0;
+    int times = 0;
+    int rows;
+    int cols;
+    int []dir = {-1,0,1,0,-1};
+    //solve this function
+    public int rotOranges(int[][] grid, int r, int c) {
+        if(grid == null || grid[0].length == 0){
+            return 0;
+        }
+        rows = grid.length;
+        cols = grid[0].length;
+        for(int i = 0;i < rows;i++){
+            for(int j = 0;j < cols;j++){
+                if(grid[i][j] == 2){
+                    q.offer(new Pair(i,j));
+                }
+                if(grid[i][j] == 1){
+                    freshOranges++;
+                }
+            }
+        }
+        if(freshOranges == 0)
+            return 0;
+        BFS(grid);
+        return freshOranges == 0 ? times - 1 : -1;
+    }
+    //BFS Traversal
+    public void BFS(int [][]grid){
+        while(!q.isEmpty()){
+            times++;
+            int size = q.size();
+            for(int j = 0; j < size; j++){
+                Pair coordinates = q.poll();
+                int x_coord = coordinates.first;
+                int y_coord = coordinates.second;
+                for(int i = 0; i < 4; i++){
+                    int x = x_coord + dir[i];
+                    int y = y_coord + dir[i + 1];
+                    if(isValid(x, y, grid)){
+                        grid[x][y] = 2;
+                        q.offer(new Pair(x,y));
+                        freshOranges--;
+                    }
+                }
+            }
+        }
+    }
+    //Check coordinates are valid or not
+    public boolean isValid(int x,int y,int[][] grid){
+        if(x < 0 || x >= rows || y < 0 || y >= cols){
+            return false;
+        }
+        if(grid[x][y] == 0 || grid[x][y] == 2){
+            return false;
+        }
+        return true;
+    }
+}
+      
